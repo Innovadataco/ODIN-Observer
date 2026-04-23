@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODIN Observer | InnovaDataCO</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🜏 ODIN OBSERVER</h1>
+            <p>Enterprise Operating System — InnovaDataCO</p>
+            <div class="status-badge">
+                <span class="status-dot green"></span>
+                Sistema Activo 24/7
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="activities">Actividades</button>
+            <button class="tab-btn" data-tab="briefs">Morning Briefs</button>
+            <button class="tab-btn" data-tab="metrics">Métricas</button>
+        </nav>
+
+        <main>
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-value" id="total-activities">-</div>
+                        <div class="stat-label">Actividades Totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🤖</div>
+                        <div class="stat-value" id="autonomous-actions">-</div>
+                        <div class="stat-label">Acciones Autónomas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-value" id="briefs-count">-</div>
+                        <div class="stat-label">Briefs Generados</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔗</div>
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Sistemas Conectados</div>
+                    </div>
+                </div>
+
+                <div class="system-status">
+                    <h2>🖥️ Estado del Sistema</h2>
+                    <div class="status-list">
+                        <div class="status-item">
+                            <span class="status-icon">✅</span>
+                            <span>Telegram Bot</span>
+                            <span class="status-text online">Online</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-icon">✅</span>
+                            <span>GitHub API</span>
+                            <span class="status-text online">Online</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-icon">✅</span>
+                            <span>Google Workspace</span>
+                            <span class="status-text online">Online</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-icon">✅</span>
+                            <span>YouTube API</span>
+                            <span class="status-text online">Online</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-panel">
+                    <h2>⚡ Acciones Rápidas</h2>
+                    <button class="action-btn" onclick="generateBrief()">
+                        🌅 Generar Morning Brief
+                    </button>
+                    <button class="action-btn" onclick="exportData()">
+                        📊 Exportar Datos
+                    </button>
+                    <button class="action-btn" onclick="refreshStats()">
+                        🔄 Actualizar Estadísticas
+                    </button>
+                </div>
+            </section>
+
+            <!-- Activities Tab -->
+            <section id="activities" class="tab-content">
+                <h2>📋 Actividades Recientes</h2>
+                <div class="filter-bar">
+                    <select id="hours-filter">
+                        <option value="24">Últimas 24 horas</option>
+                        <option value="48">Últimas 48 horas</option>
+                        <option value="168">Última semana</option>
+                    </select>
+                    <button onclick="loadActivities()">Cargar</button>
+                </div>
+                <div class="activities-list" id="activities-list">
+                    <div class="loading">Cargando actividades...</div>
+                </div>
+            </section>
+
+            <!-- Briefs Tab -->
+            <section id="briefs" class="tab-content">
+                <h2>🌅 Morning Briefs</h2>
+                <div class="brief-actions">
+                    <button class="action-btn" onclick="generateNewBrief()">
+                        ➕ Generar Nuevo Brief
+                    </button>
+                    <button class="action-btn" onclick="loadLatestBrief()">
+                        📄 Ver Último Brief
+                    </button>
+                </div>
+                <div class="brief-content" id="brief-content">
+                    <div class="placeholder">
+                        Selecciona una acción para ver o generar un Morning Brief
+                    </div>
+                </div>
+            </section>
+
+            <!-- Metrics Tab -->
+            <section id="metrics" class="tab-content">
+                <h2>📈 Métricas Detalladas</h2>
+                <div class="metrics-grid" id="metrics-grid">
+                    <div class="loading">Cargando métricas...</div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>ODIN Enterprise Operating System v1.0</p>
+            <p>InnovaDataCO © 2026</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
