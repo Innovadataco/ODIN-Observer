@@ -16,7 +16,7 @@ module.exports = {
         JWT_SECRET: 'odin_jwt_secret_2026_innovadataco',
         GOOGLE_CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID_HERE',
         GOOGLE_CLIENT_SECRET: 'YOUR_GOOGLE_CLIENT_SECRET_HERE',
-        GOOGLE_CALLBACK_URL: 'https://odinobserver.innovadataco.com/api/auth/google/callback',
+        GOOGLE_CALLBACK_URL: 'https://your-domain.com/api/auth/google/callback',
       },
       env_production: {
         NODE_ENV: 'production',
