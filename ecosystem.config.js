@@ -1,0 +1,63 @@
+const path = require('path');
+
+module.exports = {
+  apps: [
+    {
+      name: 'odin-backend',
+      script: './backend/dist/server.js',
+      cwd: path.resolve(__dirname),
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+        DATABASE_URL: process.env.DATABASE_URL || 'postgresql://odin_user:odin_pass@localhost:5432/odin_observer',
+        SESSION_SECRET: process.env.SESSION_SECRET || 'change-this-in-production',
+        JWT_SECRET: process.env.JWT_SECRET || 'change-this-in-production',
+        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      max_memory_restart: '512M',
+      restart_delay: 3000,
+      log_file: './logs/backend-combined.log',
+      out_file: './logs/backend-out.log',
+      error_file: './logs/backend-error.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      merge_logs: true,
+      kill_timeout: 5000,
+      listen_timeout: 8000,
+      wait_ready: true,
+    },
+    {
+      name: 'odin-frontend',
+      script: 'npx',
+      args: 'serve -s ./frontend/dist -l 5173',
+      cwd: path.resolve(__dirname),
+      instances: 1,
+      exec_mode: 'fork',
+      env: {
+        NODE_ENV: 'production',
+      },
+      env_production: {
+        NODE_ENV: 'production',
+      },
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      max_memory_restart: '256M',
+      restart_delay: 3000,
+      log_file: './logs/frontend-combined.log',
+      out_file: './logs/frontend-out.log',
+      error_file: './logs/frontend-error.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+      merge_logs: true,
+      kill_timeout: 5000,
+    },
+  ],
+};

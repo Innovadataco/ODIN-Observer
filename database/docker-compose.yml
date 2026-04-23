@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: odin-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: odin_user
+      POSTGRES_PASSWORD: odin_pass
+      POSTGRES_DB: odin_observer
+    ports:
+      - "5432:5432"
+    volumes:
+      - odin_pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odin_user -d odin_observer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  odin_pgdata:
+    driver: local
