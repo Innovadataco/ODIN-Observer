@@ -14,9 +14,9 @@ module.exports = {
         DATABASE_URL: 'postgresql://odin:odin_2026_secure@localhost:5432/odin_observer',
         SESSION_SECRET: 'SESSION_SECRET_PLACEHOLDER',
         JWT_SECRET: 'JWT_SECRET_PLACEHOLDER',
-        GOOGLE_CLIENT_ID: '800039801840-arvhn5fbjibm5di4so434e70p5h7vmnt.apps.googleusercontent.com',
+        GOOGLE_CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID_HERE',
         GOOGLE_CLIENT_SECRET: 'GOOGLE_CLIENT_SECRET_PLACEHOLDER',
-        GOOGLE_CALLBACK_URL: 'https://odinobserver.innovadataco.com/api/auth/google/callback',
+        GOOGLE_CALLBACK_URL: 'https://your-domain.com/api/auth/google/callback',
       },
       env_production: {
         NODE_ENV: 'production',
