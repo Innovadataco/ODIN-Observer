@@ -11,11 +11,12 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 3000,
-        DATABASE_URL: process.env.DATABASE_URL || 'postgresql://odin_user:odin_pass@localhost:5432/odin_observer',
-        SESSION_SECRET: process.env.SESSION_SECRET || 'change-this-in-production',
-        JWT_SECRET: process.env.JWT_SECRET || 'change-this-in-production',
-        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+        DATABASE_URL: 'postgresql://odin:odin_2026_secure@localhost:5432/odin_observer',
+        SESSION_SECRET: 'odin_session_secret_2026_innovadataco',
+        JWT_SECRET: 'odin_jwt_secret_2026_innovadataco',
+        GOOGLE_CLIENT_ID: 'YOUR_GOOGLE_CLIENT_ID_HERE',
+        GOOGLE_CLIENT_SECRET: 'YOUR_GOOGLE_CLIENT_SECRET_HERE',
+        GOOGLE_CALLBACK_URL: 'http://YOUR_SERVER_IP:3000/api/auth/google/callback',
       },
       env_production: {
         NODE_ENV: 'production',
@@ -36,8 +37,7 @@ module.exports = {
     },
     {
       name: 'odin-frontend',
-      script: 'npx',
-      args: 'serve -s ./frontend/dist -l 5173',
+      script: './serve-frontend.js',
       cwd: path.resolve(__dirname),
       instances: 1,
       exec_mode: 'fork',
