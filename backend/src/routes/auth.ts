@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy, VerifyCallback } from 'passport-google-oauth20';
 import jwt from 'jsonwebtoken';
@@ -6,11 +6,27 @@ import { query } from '../config/database';
 
 const router = Router();
 
+// JWT verification middleware
+function verifyJWT(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret') as any;
+      req.user = decoded;
+      return next();
+    } catch (err) {
+      // Invalid token, continue to session auth
+    }
+  }
+  next();
+}
+
 // Configure Google OAuth Strategy
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-    callbackURL: 'http://localhost:3000/api/auth/google/callback',
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:3000/api/auth/google/callback',
   },
   async (accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) => {
     try {
@@ -67,7 +83,9 @@ router.get('/google/callback',
       process.env.JWT_SECRET || 'default-secret',
       { expiresIn: '24h' }
     );
-    res.json({ success: true, token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
+    // Redirect to frontend with token in URL
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendUrl}/auth-callback?token=${encodeURIComponent(token)}`);
   }
 );
 
@@ -80,7 +98,41 @@ router.get('/logout', (req: Request, res: Response) => {
   });
 });
 
-router.get('/user', (req: Request, res: Response) => {
+// Demo login — no OAuth required, instant access
+router.get('/demo-login', async (req: Request, res: Response) => {
+  try {
+    const demoEmail = 'ceo@innovadataco.com';
+    
+    // Check if demo user exists
+    const userResult = await query('SELECT * FROM users WHERE email = $1', [demoEmail]);
+    let user;
+
+    if (userResult.rows.length === 0) {
+      // Create demo user
+      const insertResult = await query(
+        'INSERT INTO users (google_id, email, name, role) VALUES ($1, $2, $3, $4) RETURNING *',
+        ['demo-google-id', demoEmail, 'Jelkin Zair Carrillo Franco', 'admin']
+      );
+      user = insertResult.rows[0];
+    } else {
+      user = userResult.rows[0];
+    }
+
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET || 'default-secret',
+      { expiresIn: '7d' }
+    );
+
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    res.redirect(`${frontendUrl}/auth-callback?token=${encodeURIComponent(token)}`);
+  } catch (error) {
+    console.error('Demo login error:', error);
+    res.status(500).json({ error: 'Demo login failed' });
+  }
+});
+
+router.get('/user', verifyJWT, (req: Request, res: Response) => {
   if (req.user) {
     res.json({ user: req.user });
   } else {

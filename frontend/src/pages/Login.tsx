@@ -14,6 +14,23 @@ export default function Login() {
 
         <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 backdrop-blur">
           <button
+            onClick={() => { window.location.href = '/api/auth/demo-login' }}
+            className="w-full flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 px-4 rounded-xl transition-colors mb-3"
+          >
+            <Shield className="w-5 h-5" />
+            Acceder como CEO (Demo)
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-700"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-slate-800/50 px-2 text-slate-500">o</span>
+            </div>
+          </div>
+
+          <button
             onClick={() => { window.location.href = '/api/auth/google' }}
             className="w-full flex items-center justify-center gap-3 bg-white hover:bg-slate-100 text-slate-900 font-medium py-3 px-4 rounded-xl transition-colors"
           >
